@@ -52,7 +52,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <cassert>
-
+#include <hpctoolkit.h>
 #include <mpi.h>
 
 #include "Graph.hpp"
@@ -61,6 +61,7 @@
 //////////////////////////////////////////////////////////////////////////////
 int main(int argc, char *argv[])
 {
+  hpctoolkit_sampling_stop();
   MPI_Init(&argc,&argv);
 
   int myrank;
@@ -104,9 +105,10 @@ int main(int argc, char *argv[])
     std::cout << "Number of Triangles: " << g.getNumTriangles() << std::endl;
   }
   //g.printTriangles();
-
+  hpctoolkit_sampling_start();
   g.calculateTriangleDegrees();
   g.calculateKCounts();
+  hpctoolkit_sampling_stop();
   g.printKCounts();
 
   MPI_Finalize();
